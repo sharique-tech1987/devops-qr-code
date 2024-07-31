@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: api-app
-        image: shariquetech1987/devops-qrcode-api:0.0.1
+        image: shariquetech1987/devops-qrcode-api:0.0.2
         ports:
         - name: api-app-port
           containerPort: 8000

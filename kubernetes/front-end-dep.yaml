@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: frontend-app
-        image: shariquetech1987/devops-qrcode-front-end:0.0.1
+        image: shariquetech1987/devops-qrcode-front-end:0.0.2
         ports:
         - name: frontend-app-port
           containerPort: 3000
