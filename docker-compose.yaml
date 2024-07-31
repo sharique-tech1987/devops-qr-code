@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  api-app:
+    build:
+      context: ./api
+    container_name: api-app
+    image: dc-qr-code-api
+    ports:
+      - "8000:8000"
+    environment:
+      - AWS_ACCESS_KEY=AWS_ACCESS_KEY
+      - AWS_SECRET_KEY=AWS_SECRET_KEY
+  frontend-app:
+    build:
+      context: ./front-end-nextjs
+    container_name: frontend-app
+    image: dc-qr-code-front-end
+    ports:
+      - "3000:3000"

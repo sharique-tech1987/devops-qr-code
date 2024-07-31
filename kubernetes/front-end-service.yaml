@@ -5,7 +5,7 @@ metadata:
 spec:
   ports:
   - port: 80
-    targetPort: frontend-app-port
+    targetPort: uiapp-port
     protocol: TCP
   selector:
     app: frontend-app
