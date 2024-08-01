@@ -13,7 +13,7 @@ app = FastAPI()
 
 # Allowing CORS for local testing
 origins = [
-    "http://localhost:3000"
+    "http://k8s.sharique.cloud:3000"
 ]
 
 app.add_middleware(
@@ -31,7 +31,11 @@ s3 = boto3.client(
 
 bucket_name = 'sharique-devops-qr-code' # Add your bucket name here
 
-@app.post("/generate-qr/")
+@app.get("/api/test/")
+def read_root():
+    return {'Hello': 'World'}
+
+@app.post("/api/generate-qr/")
 async def generate_qr(url: str):
     # Generate QR Code
     qr = qrcode.QRCode(
