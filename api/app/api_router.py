@@ -1,9 +1,12 @@
-from fastapi import APIRouter
-import os
+from fastapi import APIRouter, HTTPException
 import qrcode
 import boto3
+from dotenv import load_dotenv
 import os
 from io import BytesIO
+
+# Loading Environment variable (AWS Access Key and Secret Key)
+load_dotenv()
 
 
 router = APIRouter(prefix='/api')
