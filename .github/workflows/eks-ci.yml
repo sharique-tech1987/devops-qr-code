@@ -19,7 +19,7 @@ jobs:
       with:
         image: shariquetech1987/devops-qrcode-api
         registry: docker.io
-        dockerfile: ./api/app/Dockerfile
+        directory: ./api/
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
          
