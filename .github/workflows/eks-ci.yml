@@ -4,7 +4,7 @@ name: NextJs and FastApi App deploy to EKS
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   deploy:
