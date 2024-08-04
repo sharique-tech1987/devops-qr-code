@@ -2,7 +2,7 @@ FROM node:20
 
 WORKDIR /usr/src/app
 
-COPY . .
+COPY ./front-end-nextjs .
 RUN npm install
 RUN npm run build
 
