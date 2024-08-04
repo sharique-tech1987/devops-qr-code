@@ -14,12 +14,15 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Change directory to api
+      run: cd api/
+
     - name: Build and Push API Docker Image
       uses: mr-smithers-excellent/docker-build-push@v4
       with:
         image: shariquetech1987/devops-qrcode-api
         registry: docker.io
-        dockerfile: ./api/Dockerfile
+        # dockerfile: ./api/Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
          
