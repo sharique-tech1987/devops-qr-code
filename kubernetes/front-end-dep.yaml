@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: ui-app
-        image: shariquetech1987/devops-qrcode-front-end:0.0.4
+        image: shariquetech1987/devops-qrcode-front-end:latest
         ports:
         - containerPort: 3000
