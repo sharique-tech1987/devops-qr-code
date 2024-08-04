@@ -19,3 +19,26 @@ spec:
         image: shariquetech1987/devops-qrcode-api:latest
         ports:
         - containerPort: 8000
+        env:
+        - name: BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: qrapp-cm
+              key: BASE_URL
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: qrapp-cm
+              key: PORT
+        - name: AWS_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: app-secret
+              key: AWS_ACCESS_KEY
+        - name: AWS_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: app-secret
+              key: AWS_SECRET_KEY
+            
+
