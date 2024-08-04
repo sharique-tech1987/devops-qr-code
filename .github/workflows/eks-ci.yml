@@ -7,6 +7,10 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+env:
+  EKS_CLUSTER_NAME: demo-cluster
+  AWS_REGION: us-east-1
+
 jobs:
   deploy:
 
@@ -18,7 +22,7 @@ jobs:
     - name: Install kubectl
       uses: azure/setup-kubectl@v4
       with:
-        version: 'latest' # default is latest stable
+        version: '1.30.2' # default is latest stable
       id: install
 
     - name: Configure AWS Credentials
@@ -47,4 +51,17 @@ jobs:
         tag: latest
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Update kube config
+      run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
+      
+    - name: Deploy to EKS
+      run: |
+          cd kubernetes/
+          ls -l
+          kubectl apply -f api-dep.yaml
+          kubectl apply -f api-service.yaml
+          kubectl apply -f front-end-dep.yaml
+          kubectl apply -f front-end-service.yaml
+          kubectl apply -f ingress.yaml
          
