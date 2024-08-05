@@ -5,6 +5,9 @@ name: NextJs and FastApi App deploy to EKS
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+      - 'infra/**'
+  
   workflow_dispatch:
 
 env:
