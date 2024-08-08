@@ -1,3 +1,4 @@
+# Create VPC for EKS cluster
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
   version = "3.14.2"
@@ -11,6 +12,8 @@ module "vpc" {
   public_subnets = ["172.20.4.0/24", "172.20.5.0/24", "172.20.6.0/24"]
 
   enable_nat_gateway = true
+  
+  # Create single shared NAT gateway
   single_nat_gateway = true
   enable_dns_hostnames = true
 

@@ -1,3 +1,4 @@
+# Create EKS cluster
 module "eks" {
   source = "terraform-aws-modules/eks/aws"
   version = "19.0.4"
@@ -14,6 +15,7 @@ module "eks" {
 
   }
 
+# Create Node groups for EKS cluster
   eks_managed_node_groups = {
     one = {
       name = "node-group-1"

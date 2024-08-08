@@ -3,11 +3,12 @@
 name: NextJs and FastApi App deploy to EKS
 
 on:
+  # activates the workflow when there is a push on the main branch
   push:
     branches: [ main ]
     paths-ignore:
       - 'infra/**'
-  
+  # can run workflow from github
   workflow_dispatch:
 
 env:
@@ -20,6 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      # checks out your repository so that your workflow can access it
     - uses: actions/checkout@v3
 
     - name: Install kubectl
@@ -55,6 +57,7 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
+    # update kube config so that kubectl can access the EKS cluster
     - name: Update kube config
       run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
       
