@@ -24,7 +24,7 @@ In this guide, we will cover the following:
 * Building and running the project with docker
 * Deploy the app on minikube
 * Creating infrastructure using Terraform
-* Deploying the app on an EKS cluster (coming soon)
+* Deploying the app on an EKS cluster
 
 ### Running the api app
 * Setup S3 bucket api keys on aws
@@ -156,6 +156,70 @@ To check you can access the cluster
 ```bash
 kubectl get nodes
 ```
+
+### Deploying the app on an EKS cluster
+If you want to run code with my docker images on EKS. You can follow this procedure.
+Install ingress-nginx Controller on Kubernetes cluster.
+```bash
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.11.1/deploy/static/provider/aws/deploy.yaml
+```
+
+You need a domain name to test the app on EKS.
+Create a CNAME record in your DNS provider with the load balancer value provided after the installation of ingress-nginx controller. For example
+```bash
+Record Type: CNAME | my-app.example.com | examplebalancer.region.elb.amazonaws.com
+```
+
+Replace the container image in kubernetes/api-dep.yaml file
+```bash
+shariquetech1987/devops-qrcode-api:latest
+```
+with this
+```bash
+shariquetech1987/devops-qrcode-api:stable
+```
+
+Replace the container image in kubernetes/front-end-dep.yaml file
+```bash
+shariquetech1987/devops-qrcode-front-end:latest
+```
+with this
+```bash
+shariquetech1987/devops-qrcode-front-end:stable
+```
+
+Replace the hostname in kubernetes/ingress.yaml file
+```bash
+host: Your-Domain
+```
+
+Replace the BASE_URL in kubernetes/cm.yaml file
+```bash
+BASE_URL: "Your-Domain"
+```
+
+Encode your S3 bucket key to Base64 and replace it in kubernetes/app-secret.yaml
+```bash
+AWS_ACCESS_KEY: [Your Base64 Encoded Keys]
+AWS_SECRET_KEY: [Your Base64 Encoded Keys]
+```
+
+Deploy the files
+```bash
+kubectl apply -f cm.yaml
+kubectl apply -f app-secret.yaml
+kubectl apply -f api-dep.yaml
+kubectl apply -f front-end-dep.yaml
+kubectl apply -f api-service.yaml
+kubectl apply -f front-end-service.yaml
+kubectl apply -f ingress.yaml
+```
+
+Wait for the ELB address assign to your domain.
+```bash
+kubectl get ingress -w
+```
+Then press Ctrl+c after the address appears.
 
 ## Find a bug
 If you encounter an issue or have suggestions for improving this project, please submit an issue via the "Issues" tab above.
