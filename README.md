@@ -1,7 +1,7 @@
 
 # QR Code Generator: Powered by FastAPI, Next.js, Kubernetes, and Terraform
 
-## A sample QR Code Generator application built using FastAPI and Next.js, deployed on a Elastic Kubernetes cluster with infrastructure managed by Terraform.
+## A sample QR Code Generator application built using FastAPI and Next.js, deployed on a minikube and Elastic Kubernetes cluster with infrastructure managed by Terraform.
 
 This example project demonstrates a cloud-native app with a Next.js front-end and FastAPI backend, storing QR codes in S3. It automates DevOps by containerizing, deploying via GitHub Actions to EKS, and uses Kubernetes for scalable infrastructure. Terraform provisions AWS resources like VPC and EKS. Thanks to [Rishab](https://github.com/rishabkumar7) for the backend and front-end code. This example demonstrates how to accomplish the following tasks:
 
@@ -17,19 +17,12 @@ This example project demonstrates a cloud-native app with a Next.js front-end an
 
 **Note:** This example uses AWS to create infrastructure.
 
-
-
-
-
-
-
-
-
 In this guide, we will cover the following:
 
 * Running the api app
 * Running the QR generator front-end
 * Building and running the project with docker
+* Deploy the app on minikube
 * Creating infrastructure using Terraform
 * Deploying the app on an EKS cluster (coming soon)
 
@@ -88,6 +81,46 @@ docker run -p 3000:3000 -d devops-qr-code-front-end
 To test the app
 ```bash
 http://localhost:3000/
+```
+
+### Deploy the app on minikube
+First, switch to branch named __run-on-minikube__. Then on windows run this command on powershell with administrator privileges. Now any 'docker' command you run in this current terminal will run against the docker inside minikube cluster.
+```bash
+& minikube -p minikube docker-env --shell powershell | Invoke-Expression
+```
+
+Build the docker image for front-end and backend
+```bash
+cd devops-qr-code
+docker build -f .\front-end-nextjs\Dockerfile -t devops-qrcode-front-end:latest .
+docker build -f .\api\Dockerfile -t devops-qrcode-api:latest .
+```
+
+Encode your S3 bucket keys to Base64 and replace it in Kubernetes/app-secret.yaml
+```bash
+AWS_ACCESS_KEY: [Your Base64 Encoded Keys]
+AWS_SECRET_KEY: [Your Base64 Encoded Keys]
+```
+
+Install kubectl client to access minikube cluster.Deploy the files in minikube cluster.
+```bash
+kubectl apply -f cm.yaml
+kubectl apply -f app-secret.yaml
+kubectl apply -f api-dep.yaml
+kubectl apply -f front-end-dep.yaml
+kubectl apply -f api-service.yaml
+kubectl apply -f front-end-service.yaml
+```
+
+Do port forwarding to test the app
+```bash
+kubectl port-forward svc/ui-app 3000:3000
+kubectl port-forward svc/api-app 8000:8000
+```
+
+To test the app
+```bash
+http://localhost:3000
 ```
 
 ### Creating infrastructure using Terraform
